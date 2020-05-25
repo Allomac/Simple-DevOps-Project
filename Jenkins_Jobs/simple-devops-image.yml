@@ -1,10 +1,12 @@
-# Option-1 : Createting docker image using command module 
+#--------CREATING IMAGE ------------------
+#
+#Option-1 : Creating docker image using command module 
 ---
 - hosts: all
   become: true
   tasks:
-  - name: building docker image
-    command: docker build -t simple-devops-image .
+  - name: building docker image using war file
+    command: docker build -t simple-devops-image:8.0 .
     args:
       chdir: /opt/docker
 
@@ -18,3 +20,25 @@
 #      name: simple-devops-image
 #     tag: v1
 #     source: build
+#
+#-----------CREATING CONTAINER ----------------
+#
+#Option-1 : Creating docker container using command module 
+---
+- hosts: all
+  become: true
+
+  tasks:
+  - name: creating docker image using docker command
+    command: docker run -d --name simple-devops-container -p 8080:8080 simple-devops-image:8.0
+	
+# option-2 : creating docker container using docker_container module 	
+#  tasks:
+#  - name: create simple-devops-container
+#    docker_container:
+#      name: simple-devops-container
+#      image: simple-devops-image
+#      state: present
+#      recreate: yes
+#      ports:
+#        - "8080:8080"
