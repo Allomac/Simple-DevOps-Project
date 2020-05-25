@@ -6,7 +6,7 @@
   become: true
   tasks:
   - name: building docker image using war file
-    command: docker build -t simple-devops-image:8.0 .
+    command: docker build -t simple-devops-image .
     args:
       chdir: /opt/docker
 
@@ -25,7 +25,7 @@
 #
 #Option-1 : Creating docker container using command module 
   - name: creating docker image using docker command
-    command: docker run -d --name simple-devops-container -p 8080:8080 simple-devops-image:8.0
+    command: docker run -d --name simple-devops-container -p 8080:8080 simple-devops-image
 	
 # option-2 : creating docker container using docker_container module 	
 #  tasks:
