@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: true
+  vars:
+    my_image: simple-devops-image
+    my_container: simple-devops-container
+  tasks:
+  - name: stop if we have old docker container
+    command: docker stop {{ my_container }}
+    ignore_errors: yes
+
+  - name: remove stopped docker container
+    command: docker rm {{ my_container }}
+    ignore_errors: yes
+
+  - name: remove current docker image
+    command: docker rmi {{ my_image }}
+    ignore_errors: yes
+    
+  - name: building docker image using war file
+    command: docker build -t {{ my_image }} .
+    args:
+      chdir: /opt/docker
+
+  - name: create tag to image 
+    command: docker tag {{ my_image }} allomac/{{ my_image }} 
+    
+  - name: login and push image on to dockerhub
+    command: docker push allomac/{{ my_image }}
+    
+  - name: remove docker images from ansible server
+    command: docker rmi {{ my_image }} allomac/{{ my_image }}
+    
