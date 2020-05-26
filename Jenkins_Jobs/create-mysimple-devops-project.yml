@@ -1,7 +1,7 @@
 ---
 - hosts: all
   become: true
-    vars:
+  vars:
     my_image: simple-devops-image
     my_container: allomac/simple-devops-container
 
